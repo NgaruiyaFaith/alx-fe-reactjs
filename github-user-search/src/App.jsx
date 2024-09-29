@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState } from "react";
-import SearchBar from "./components/Search";
+import Search from "./components/Search";
 import UserList from "./components/UserList";
 
 function App() {

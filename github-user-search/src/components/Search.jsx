@@ -1,8 +1,8 @@
-// src/components/SearchBar.jsx
+// src/components/Search.jsx
 import React, { useState } from "react";
 import { fetchUserData } from "../services/githubService"; // Import the API service
 
-function SearchBar({ setUser, setError, setLoading }) {
+function Search({ setUser, setError, setLoading }) {
   const [input, setInput] = useState(""); // State to store user input
 
   // Handle form submission
@@ -35,5 +35,6 @@ function SearchBar({ setUser, setError, setLoading }) {
   );
 }
 
-export default SearchBar;
+export default Search;
+
 
