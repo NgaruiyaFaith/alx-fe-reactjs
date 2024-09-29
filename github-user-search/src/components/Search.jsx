@@ -1,23 +1,22 @@
 // src/components/Search.jsx
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService"; // Import the API service
+import { fetchUserData } from "../services/githubService";
 
 function Search({ setUser, setError, setLoading }) {
-  const [input, setInput] = useState(""); // State to store user input
+  const [input, setInput] = useState("");
 
-  // Handle form submission
   const handleSearch = async (e) => {
     e.preventDefault();
     if (input.trim()) {
-      setLoading(true); // Set loading state
-      setError(null); // Reset error state
+      setLoading(true);
+      setError(null);
       try {
-        const userData = await fetchUserData(input); // Fetch user data from API
-        setUser(userData); // Update user data in the parent state
+        const userData = await fetchUserData(input);
+        setUser(userData); // Update the user state with the fetched data
       } catch (error) {
-        setError("Looks like we can't find the user."); // Set error state
+        setError("Looks like we can't find the user."); // Error message
       } finally {
-        setLoading(false); // Reset loading state
+        setLoading(false);
       }
     }
   };
@@ -28,7 +27,7 @@ function Search({ setUser, setError, setLoading }) {
         type="text"
         placeholder="Search GitHub Username"
         value={input}
-        onChange={(e) => setInput(e.target.value)} // Update input value
+        onChange={(e) => setInput(e.target.value)} // Track user input
       />
       <button type="submit">Search</button>
     </form>
@@ -36,5 +35,6 @@ function Search({ setUser, setError, setLoading }) {
 }
 
 export default Search;
+
 
 
