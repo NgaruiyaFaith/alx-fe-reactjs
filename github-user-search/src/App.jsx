@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <h1>GitHub User Search</h1>
-      <SearchBar setUser={setUser} setError={setError} setLoading={setLoading} />
+      <Search setUser={setUser} setError={setError} setLoading={setLoading} />
 
       {/* Display conditional UI based on the state */}
       {loading && <p>Loading...</p>}
