@@ -1,65 +1,91 @@
 // src/components/Search.jsx
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchAdvancedUserData } from "../services/githubService";
 
 function Search() {
   const [input, setInput] = useState("");
-  const [user, setUser] = useState(null); // Moved user state here
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [location, setLocation] = useState(""); // State for location
+  const [minRepos, setMinRepos] = useState(""); // State for minimum repos
+  const [users, setUsers] = useState([]); // For multiple users
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (input.trim()) {
-      setLoading(true);
-      setError(null);
-      setUser(null); // Reset user data before new search
-      try {
-        const userData = await fetchUserData(input);
-        setUser(userData); // Store user data
-      } catch (error) {
-        setError("Looks like we cant find the user."); // Error message
-      } finally {
-        setLoading(false); // Stop loading after request
-      }
+    setLoading(true);
+    setError(null);
+    setUsers([]);
+    
+    try {
+      const query = {
+        username: input,
+        location,
+        minRepos
+      };
+      const userData = await fetchAdvancedUserData(query); // Advanced API call
+      setUsers(userData.items); // Store users list
+    } catch (error) {
+      setError("Looks like we can't find any users.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      {/* Search Input */}
-      <form onSubmit={handleSearch}>
+    <div className="max-w-md mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4 text-center">GitHub Advanced Search</h1>
+
+      {/* Search Form */}
+      <form onSubmit={handleSearch} className="space-y-4">
         <input
           type="text"
-          placeholder="Search GitHub Username"
+          placeholder="Search by Username"
           value={input}
-          onChange={(e) => setInput(e.target.value)} // Capture input
+          onChange={(e) => setInput(e.target.value)}
+          className="w-full p-2 border rounded"
         />
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repos"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Search
+        </button>
       </form>
 
-      {/* Conditional Rendering: Loading */}
-      {loading && <p>Loading...</p>}
+      {/* Conditional Rendering */}
+      {loading && <p className="mt-4 text-center">Loading...</p>}
+      {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
 
-      {/* Conditional Rendering: Error */}
-      {error && <p>{error}</p>}
-
-      {/* Conditional Rendering: Display User Data */}
-      {user && (
-        <div>
-          {/* Display avatar */}
-          <img src={user.avatar_url} alt={`${user.login}'s avatar`} width={100} />
-          
-          {/* Display login (username) */}
-          <h2>{user.name || user.login}</h2>
-          <p><strong>Username:</strong> {user.login}</p>
-          
-          {/* Link to GitHub profile */}
-          <p>
-            <a href={user.html_url} target="_blank" rel="noopener noreferrer">
-              View Profile
-            </a>
-          </p>
+      {/* Display Users */}
+      {users.length > 0 && (
+        <div className="mt-6">
+          {users.map((user) => (
+            <div key={user.id} className="flex items-center mb-4">
+              <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full mr-4" />
+              <div>
+                <h2 className="text-lg font-bold">{user.login}</h2>
+                <p>{user.location || "No location available"}</p>
+                <p>Repositories: {user.public_repos}</p>
+                <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                  View Profile
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -67,6 +93,7 @@ function Search() {
 }
 
 export default Search;
+
 
 
 
