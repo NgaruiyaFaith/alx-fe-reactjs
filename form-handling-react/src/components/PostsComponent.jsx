@@ -9,8 +9,8 @@ const fetchPosts = async () => {
 };
 
 const PostsComponent = () => {
-  // Use React Query's useQuery with an object
-  const { data, error, isLoading, refetch } = useQuery({
+  // Use React Query's useQuery with isError
+  const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
   });
@@ -19,7 +19,7 @@ const PostsComponent = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (isError) {
     return <div>Error fetching posts</div>;
   }
 
