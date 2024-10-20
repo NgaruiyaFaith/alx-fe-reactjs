@@ -1,29 +1,19 @@
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Basic validation: ensure fields are not empty
-    if (!formData.username || !formData.email || !formData.password) {
+    // Basic validation to check if all fields are filled
+    if (!username || !email || !password) {
       alert("All fields are required!");
       return;
     }
-    // Submit form logic here (e.g., mock API call)
-    console.log('Form Submitted:', formData);
+    // Mock API call logic here
+    console.log('Form Submitted:', { username, email, password });
   };
 
   return (
@@ -33,31 +23,35 @@ const RegistrationForm = () => {
         <input
           type="text"
           name="username"
-          value={formData.username}
-          onChange={handleChange}
+          value={username}  // This is important
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
+
       <div>
         <label>Email:</label>
         <input
           type="email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}  // This is important
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
+
       <div>
         <label>Password:</label>
         <input
           type="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
+          value={password}  // This is important
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+
       <button type="submit">Register</button>
     </form>
   );
 };
 
 export default RegistrationForm;
+
