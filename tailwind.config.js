@@ -2,13 +2,15 @@
 // tailwind.config.js
 module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+    './src/**/*.{js,jsx,ts,tsx}', 
+    './public/index.html'
+  ], 
+  darkMode: 'media', // Or 'class' for manual control
   theme: {
     extend: {},
   },
   plugins: [],
 };
+
 
 

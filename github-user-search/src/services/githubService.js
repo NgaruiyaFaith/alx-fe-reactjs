@@ -23,7 +23,7 @@ export const fetchUserData = async (query, location, minRepos) => {
         const response = await axios.get(`${BASE_URL}${encodeURIComponent(searchQuery)}`);
         return response.data.items; // Return the list of users
     } catch (error) {
-        console.error('Error fetching user data:', error);
+        setError('Error fetching user data:', error);
         throw error; // Throw error to be handled in the component
     }
 };
